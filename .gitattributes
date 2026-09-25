@@ -1,0 +1,29 @@
+# Normaliza los finales de línea para que Windows y Linux no se peleen.
+#
+# Sin esto: en Windows git convierte los ficheros a CRLF, y al volver a
+# este portátil todos los .md y .dart aparecen como "modificados" sin
+# haberlos tocado. Con esto, todos usan LF y ambos sistemas van iguales.
+
+* text=auto eol=lf
+
+# Los ficheros de texto que son código o notas, explícitamente LF
+*.sh    text eol=lf
+*.dart  text eol=lf
+*.md    text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.xml   text eol=lf
+*.json  text eol=lf
+*.lock  text eol=lf
+
+# Binarios: no tocar nunca
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.pdf   binary
+*.zip   binary
+*.apk   binary
+*.exe   binary
+*.jar   binary
+*.class binary
