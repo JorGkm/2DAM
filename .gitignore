@@ -1,0 +1,15 @@
+# Metadatos de carpetas de KDE (no son contenido tuyo)
+.directory
+.Trash-*/
+.dirdir
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editores / IDEs
+.idea/
+.vscode/
+*.swp
+*~
