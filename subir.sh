@@ -26,36 +26,50 @@ echo
 # --- 1. Preparar todos los cambios ---
 git add -A
 
-# --- 2. ¿Hay algo que subir? ---
-if git diff --cached --quiet; then
-    echo -e "${YELLOW}○ No hay cambios nuevos.${NC}"
-    echo "  Nada que subir."
+# --- 2. ¿Hay archivos modificados sin guardar? ---
+HAY_CAMBIO=0
+if ! git diff --cached --quiet; then
+    HAY_CAMBIO=1
+
+    # --- Resumen de lo que se va ---
+    echo -e "${BOLD}Archivos que se van a subir:${NC}"
+    git diff --cached --stat
+    echo
+
+    # --- Preguntar el nombre del cambio ---
+    echo -e "${BOLD}¿Cómo describes este cambio?${NC}"
+    echo -e "  ${YELLOW}(se usará como título del commit)${NC}"
+    read -r -p "  > " mensaje
+    echo
+
+    if [ -z "$mensaje" ]; then
+        echo -e "${RED}✗ Cancelado.${NC} El mensaje no puede estar vacío."
+        exit 1
+    fi
+
+    # --- Commit ---
+    if ! git commit -m "$mensaje"; then
+        echo -e "${RED}✗ Error al hacer el commit.${NC}"
+        exit 1
+    fi
+fi
+
+# --- 3. ¿Queda algún commit sin subir a GitHub? ---
+SIN_SUBIR=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+
+if [ "$SIN_SUBIR" -eq 0 ]; then
+    echo -e "${GREEN}✓ Todo está al día.${NC}"
+    echo "  No hay cambios nuevos ni commits pendientes."
     exit 0
 fi
 
-# --- 3. Resumen de lo que se va ---
-echo -e "${BOLD}Archivos que se van a subir:${NC}"
-git diff --cached --stat
-echo
-
-# --- 4. Preguntar el nombre del cambio ---
-echo -e "${BOLD}¿Cómo describes este cambio?${NC}"
-echo -e "  ${YELLOW}(se usará como título del commit)${NC}"
-read -r -p "  > " mensaje
-echo
-
-if [ -z "$mensaje" ]; then
-    echo -e "${RED}✗ Cancelado.${NC} El mensaje no puede estar vacío."
-    exit 1
+if [ "$HAY_CAMBIO" -eq 0 ]; then
+    echo -e "${YELLOW}○ No hay archivos nuevos, pero quedan ${BOLD}${SIN_SUBIR}${NC} ${YELLOW}commit(s) sin subir:${NC}"
+    git log --oneline origin/main..HEAD
+    echo
 fi
 
-# --- 5. Commit ---
-if ! git commit -m "$mensaje"; then
-    echo -e "${RED}✗ Error al hacer el commit.${NC}"
-    exit 1
-fi
-
-# --- 6. Subir ---
+# --- 4. Subir ---
 echo
 echo -e "${BOLD}Subiendo a GitHub...${NC}"
 SALIDA=$(git push 2>&1)
