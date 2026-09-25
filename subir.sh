@@ -58,21 +58,45 @@ fi
 # --- 6. Subir ---
 echo
 echo -e "${BOLD}Subiendo a GitHub...${NC}"
-if git push; then
+SALIDA=$(git push 2>&1)
+CODIGO=$?
+
+if [ $CODIGO -eq 0 ]; then
+    echo "$SALIDA" | sed 's/^/    /'
     echo
     echo -e "${GREEN}✓ Subido correctamente.${NC}"
     echo -e "  ${BOLD}${mensaje}${NC}"
     exit 0
 fi
 
-# --- Si el push falla ---
+# --- Si el push falla: averiguar por qué ---
 echo
 echo -e "${RED}✗ No se pudo subir.${NC}"
 echo
-echo -e "${BOLD}Motivo más probable:${NC} hay cambios en GitHub que tú aún"
-echo "no tenías (subiste desde el otro equipo hace un momento)."
+echo "$SALIDA" | sed 's/^/    /'
 echo
-echo -e "${BOLD}Solución:${NC}"
-echo "  1. ./bajar.sh      ${YELLOW}# baja lo que hay en GitHub${NC}"
-echo "  2. ./subir.sh      ${YELLOW}# vuelve a subir tus cambios${NC}"
+
+if echo "$SALIDA" | grep -qiE "could not read Username|Authentication failed|403|Invalid username or password"; then
+    echo -e "${BOLD}Motivo: ${RED}no estás autenticado.${NC}"
+    echo
+    echo -e "${BOLD}Solución (ejecútalo tú, en tu terminal):${NC}"
+    echo
+    echo -e "    ${BOLD}git -c credential.helper=store push${NC}"
+    echo
+    echo "  Te pedirá:"
+    echo "    Username → ${BOLD}JorGkm${NC}"
+    echo "    Password → ${BOLD}tu token de GitHub${NC} (no tu contraseña normal)"
+    echo
+    echo "  Así el token se guarda y no te lo vuelve a pedir nunca más."
+elif echo "$SALIDA" | grep -qiE "non-fast-forward|fetch first|rejected"; then
+    echo -e "${BOLD}Motivo: ${RED}hay cambios en GitHub que tú aún no tienes${NC}"
+    echo "(subiste desde el otro equipo hace un momento)."
+    echo
+    echo -e "${BOLD}Solución:${NC}"
+    echo "  ./bajar.sh     ${YELLOW}# trae lo que hay en GitHub${NC}"
+    echo "  ./subir.sh     ${YELLOW}# y vuelve a subir tus cambios${NC}"
+else
+    echo -e "${BOLD}Motivo: ${RED}error desconocido.${NC} Mira el mensaje de arriba."
+fi
+
 exit 1
