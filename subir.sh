@@ -90,18 +90,38 @@ echo
 echo "$SALIDA" | sed 's/^/    /'
 echo
 
-if echo "$SALIDA" | grep -qiE "could not read Username|Authentication failed|403|Invalid username or password"; then
-    echo -e "${BOLD}Motivo: ${RED}no estás autenticado.${NC}"
+# ¿Hay un token guardado que ha caducado? Es el caso más confuso:
+# generas uno nuevo pero git sigue enviando el viejo caducado.
+TOKEN_CADUCADO=0
+if [ -f "$HOME/.git-credentials" ] && echo "$SALIDA" | grep -qiE "Authentication failed|403|Invalid username or password"; then
+    TOKEN_CADUCADO=1
+fi
+
+if [ "$TOKEN_CADUCADO" -eq 1 ]; then
+    echo -e "${BOLD}Motivo: ${RED}tu token ha caducado.${NC}"
+    echo
+    echo -e "${BOLD}Solución (3 pasos):${NC}"
+    echo "  1. Genera uno nuevo en"
+    echo -e "     ${BOLD}https://github.com/settings/tokens${NC}"
+    echo -e "     ${YELLOW}(marca Contents → Read and write)${NC}"
+    echo -e "  2. ${BOLD}rm ~/.git-credentials${NC}   ${YELLOW}# borra el caducado${NC}"
+    echo "  3. ${BOLD}./subir.sh${NC}   ${YELLOW}# y pega el token nuevo${NC}"
+    echo
+    echo -e "  ${YELLOW}El paso 2 es imprescindible: sin él git sigue${NC}"
+    echo -e "  ${YELLOW}mandando el token viejo y te lo rechaza otra vez.${NC}"
+elif echo "$SALIDA" | grep -qiE "could not read Username|Authentication failed|403|Invalid username or password"; then
+    echo -e "${BOLD}Motivo: ${RED}no estás autenticado todavía.${NC}"
+    echo "Es la primera vez (o el token se borró del sistema)."
     echo
     echo -e "${BOLD}Solución (ejecútalo tú, en tu terminal):${NC}"
     echo
-    echo -e "    ${BOLD}git -c credential.helper=store push${NC}"
+    echo -e "    ${BOLD}git push${NC}"
     echo
     echo "  Te pedirá:"
     echo "    Username → ${BOLD}JorGkm${NC}"
     echo "    Password → ${BOLD}tu token de GitHub${NC} (no tu contraseña normal)"
     echo
-    echo "  Así el token se guarda y no te lo vuelve a pedir nunca más."
+    echo "  Quedará guardado y no te lo volverá a pedir hasta que caduque."
 elif echo "$SALIDA" | grep -qiE "non-fast-forward|fetch first|rejected"; then
     echo -e "${BOLD}Motivo: ${RED}hay cambios en GitHub que tú aún no tienes${NC}"
     echo "(subiste desde el otro equipo hace un momento)."
