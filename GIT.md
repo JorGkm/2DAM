@@ -14,6 +14,16 @@ con GitHub para poder trabajar desde cualquier equipo.
 - **Rama principal:** `main`
 - **Visibilidad:** público
 
+### Ficheros especiales de esta carpeta
+
+| Fichero | Para qué sirve |
+|---|---|
+| `subir.sh` | Sube tus cambios a GitHub |
+| `bajar.sh` | Baja los cambios del otro equipo |
+| `.gitignore` | Lista lo que **no** se sube (compilados, cachés…) |
+| `.gitattributes` | Normaliza los finales de línea entre Windows y Linux |
+| `GIT.md` | Este manual |
+
 ---
 
 ## 🚀 Lo normal: dos scripts
@@ -27,8 +37,8 @@ por ti. Solo necesitas ejecutarlos.
 ./subir.sh
 ```
 
-Te enseñará qué archivos van a subir, te pedirá una descripción del
-cambio y lo sube.
+Te enseña qué archivos van a subir, te pide una descripción del cambio
+y lo sube. Si falla por la red, **lo intenta 3 veces solo**.
 
 ### `bajar.sh` — traerte los cambios del otro equipo
 
@@ -36,9 +46,10 @@ cambio y lo sube.
 ./bajar.sh
 ```
 
-Te dirá cuántos cambios nuevos hay y los aplica.
+Te dice cuántos cambios nuevos hay y los aplica.
 
-> Si te sale `Permission denied` al ejecutarlos, dale permisos una vez:
+> Si te sale `Permission denied` al ejecutarlos, dale permisos una vez
+> (**solo en Linux**; en Windows no existe `chmod`):
 > ```bash
 > chmod +x subir.sh bajar.sh
 > ```
@@ -48,13 +59,17 @@ Te dirá cuántos cambios nuevos hay y los aplica.
 ## 🔄 El día a día
 
 ```
-   SOBREmesa/portátil A          GITHUB          Equipo B
-        │                          │                │
-   haces cambios                  │           haces cambios
-        │                          │                │
-   ./subir.sh ──────────────────► │                │
-                                  │           ./bajar.sh
-                                  │ ◄───────────────┘
+   SOBRE MESA (Windows)         GITHUB          PORTÁTIL (Linux)
+          │                        │                    │
+     haces cambios                │              haces cambios
+          │                        │                    │
+     ./subir.sh ─────────────────► │                    │
+          │                        │              ./bajar.sh
+          │                        │ ◄──────────────────┘
+          │                        │
+          │                   ./bajar.sh
+          │                        │                    │
+     ./subir.sh ─────────────────► │ ─────────────────► │
 ```
 
 **Regla de oro:** antes de ponerte a trabajar en un equipo, ejecuta
@@ -62,48 +77,142 @@ Te dirá cuántos cambios nuevos hay y los aplica.
 
 ---
 
-## 🖥️ Configurar el otro equipo (una sola vez)
+## 🖥️ Configurar elSobremesa (Windows) — una sola vez
 
-En el sobremesa, si el repo aún no está descargado:
-
-```bash
-cd ~/Escritorio
+```powershell
+cd Documentos
 git clone https://github.com/JorGkm/2DAM.git
+cd 2DAM
 ```
 
-Como el repo es **público**, no pide ni usuario ni contraseña ni token.
+Como el repo es **público**, no pide usuario ni contraseña ni token.
+Y en Windows **no** hay que hacer `chmod`.
 
-Y para que los scripts funcionen también allí:
+### Ejecutar los scripts en Windows
 
-```bash
-cd ~/Escritorio/2DAM
-chmod +x subir.sh bajar.sh
-```
+Doble clic no funciona (son de Linux). Tienes tres opciones:
+
+| Opción | Cómo |
+|---|---|
+| **A. Menú contextual** | Clic derecho en la carpeta → *"Abrir con Git Bash"* |
+| **B. Barra de direcciones** | En el Explorador de archivos, escribe `bash` y dale Enter |
+| **C. Desde CMD o PowerShell** | `bash subir.sh` (la más cómoda) |
 
 ---
 
 ## 🔑 Sobre la autenticación (por qué a veces te pide cosas)
 
-Cuando el repo era **privado** había que autenticarse. Ahora es público,
-así que ya no hace falta para nada de lo que haces.
-
 | Acción | ¿Pide contraseña? |
 |---|---|
 | `git clone` (bajar el repo) | No, si es público |
-| `git pull` (actualizar) | No |
-| `git push` (subir) | **Sí** — siempre, incluso en repos públicos |
+| `bajar.sh` (actualizar) | No |
+| `subir.sh` (subir) | **Sí** — siempre, incluso en repos públicos |
 
 > **¿Por qué si es público?** Porque *leer* es abierto para todos, pero
 > *escribir* hay que demostrar que eres tú. Es como una biblioteca
 > pública: entras a leer libremente, pero necesitas el carnet para
 > añadir libros.
 
-Si algún día `git push` te pide credenciales:
+**Hacerlo privado no cambia nada de esto.** Lo único que conseguirías es
+que también te pidiera contraseña para *bajar*.
+
+Si algún día te pide credenciales:
 
 - **Usuario:** `JorGkm`
-- **Contraseña:** tu *contraseña normal **no** sirve*. Necesitas un
-  **token personal** en <https://github.com/settings/tokens>
-  con el permiso **Contents → Read and write**.
+- **Contraseña:** tu contraseña normal **no** sirve. Necesitas un
+  **token personal** en <https://github.com/settings/tokens> con el
+  permiso **Contents → Read and write**.
+
+Una vez que el token se guarda (`~/.git-credentials`), no te lo vuelve a
+pedir hasta que caduque.
+
+---
+
+## 🚨 Errores frecuentes y qué hacer
+
+Cuando `./subir.sh` falla, **imprime el mensaje real de git arriba** y
+debajo un diagnóstico. A veces el diagnóstico es una suposición, así que
+**lee también el texto literal**.
+
+### "fallo de red"
+
+```
+fatal: unable to access '...': Could not resolve host: github.com
+```
+
+**Qué ha pasado:** no se pudo ni conectar. Wi-fi del centro, portal de
+acceso, VPN...
+
+**Qué hacer:**
+
+- Comprueba que tienes internet
+- Si usas el wifi de un centro, abre el navegador y autentifícate
+  primero (portal cautivo)
+- Cuando vuelvas a tener red, ejecuta `./subir.sh` otra vez
+
+💡 El script ya reintenta 3 veces solo, pero si el wifi está caído del
+todo no hay MAGIC que haga.
+
+### "tu token ha caducado"
+
+```
+remote: Invalid username or password
+fatal: Authentication failed
+```
+
+**Qué ha pasado:** el token guardado en tu ordenador venció. GitHub los
+tokens caducan (normalmente a los 90 días).
+
+**Qué hacer (3 pasos):**
+
+1. Genera uno nuevo en <https://github.com/settings/tokens>
+   (marca **Contents → Read and write**)
+2. `rm ~/.git-credentials` ← **imprescindible**, borra el caducado
+3. `./subir.sh` y pega el token nuevo
+
+⚠️ **El paso 2 no es opcional.** Sin él, git sigue enviando el token
+viejo y te lo rechaza otra vez, aunque el nuevo sea correcto. Es el error
+más desconcertante que te vas a encontrar.
+
+### "hay cambios en GitHub que tú aún no tienes"
+
+```
+! [rejected]        main -> main (fetch first)
+```
+
+**Qué ha pasado:** el otro equipo subió cosas y tú aún no las has bajado.
+Un conflicto de verdad.
+
+**Qué hacer:**
+
+```bash
+./bajar.sh     # trae lo que hay en GitHub
+./subir.sh     # y vuelve a subir tus cambios
+```
+
+### "no estás autenticado todavía"
+
+**Qué ha pasado:** es la primera vez, o el token se borró del sistema.
+
+**Qué hacer:**
+
+```bash
+git push
+```
+
+Y pegar usuario `JorGkm` + tu token.
+
+### "La rama main aún no existe en GitHub"
+
+**Qué ha pasado:** es la primera vez que subes esta rama. El script lo
+detecta y usa `-u` solo, así que normalmente **ni te aparecerá**.
+Si te aparece, el push va con `-u` automáticamente.
+
+### En cualquier caso
+
+**Tus cambios nunca se pierden.** Un error de git no borra tu trabajo:
+todo sigue guardado en tu disco, en local. Lo único que hay que hacer
+es volver a intentarlo cuando el problema desaparezca.
 
 ---
 
@@ -153,24 +262,48 @@ alguna vez lo necesitas:
 | Bajar | `git pull` |
 | Ver qué he cambiado | `git status` |
 | Ver el historial | `git log --oneline` |
+| Ver el historial con dibujito | `git log --oneline --graph --all` |
 | Descartar cambios sin querer | `git restore .` |
-| Ver qué hay en GitHub | `git fetch origin && git log --oneline HEAD..origin/main` |
+| Ver qué hay en GitHub sin bajarlo | `git fetch origin && git log --oneline HEAD..origin/main` |
+
+### Estoy al día?
+
+```bash
+git status -sb
+```
+
+Si la línea es `## main...origin/main` **y no hay nada más detrás**,
+estás perfectamente sincronizado. Esa línea vacía es tu "todo bien".
 
 ---
 
 ## 🚫 Lo que ignora el repo
 
-El `.gitignore` evita subir basura que no es tuya:
+El `.gitignore` evita subir basura que no es tuya. Cubre:
 
-| Ignorado | Por qué |
+| Herramienta | Lo que ignora |
 |---|---|
-| `.directory` | Metadatos de carpeta de KDE, se regeneran solos |
-| `.idea/` `.vscode/` | Configuración de editores, es personal |
-| `.DS_Store` `Thumbs.db` | Basura del sistema operativo |
-| `*~` `*.swp` | Ficheros de respaldo de editores |
+| **Flutter / Dart** | `.dart_tool/`, `build/`, `.flutter-plugins` |
+| **Android** | `build/`, `local.properties`, `*.apk`, `*.aab` |
+| **Android Studio / IntelliJ** | `.idea/`, `*.iml`, `.kotlin/` |
+| **Eclipse** | `.metadata/`, `.settings/`, `.classpath` |
+| **NetBeans** | `nbproject/private/`, `nbbuild/`, `dist/` |
+| **VS Code** | `.vscode/` (salvo `settings.json` y `extensions.json`) |
+| **.NET / C#** | `bin/` (salvo `.dart`), `obj/`, `.vs/` |
+| **Node** | `node_modules/` |
+| **Python** | `__pycache__/`, `.venv/` |
+| **Sistema** | `.directory`, `Thumbs.db`, `.DS_Store`, `*~` |
 
-Si algún día quieres subir algo que está ignorado, borra su línea del
-`.gitignore` o usa:
+### Dos detalles importantes
+
+**`pubspec.lock` SÍ se sube.** En una app conviene fijarlo para que todo
+el mundo use la misma versión. Solo se ignoraría si hicieras una librería.
+
+**`*.jar` NO se ignora.** A propósito: el wrapper de Gradle
+(`gradle/wrapper/gradle-wrapper.jar`) hace falta para compilar, y algunas
+prácticas de clase usan librerías `.jar` que hay que subir.
+
+### Subir algo que está ignorado
 
 ```bash
 git add -f ruta/al/archivo
@@ -178,15 +311,46 @@ git add -f ruta/al/archivo
 
 ---
 
-## 🆘 Deshacer cosas
+## 🧠 Conceptos (para entender qué haces)
 
-| Me he equivocado... | Solución |
+- **Repositorio** — la carpeta con una subcarpeta oculta `.git` donde git
+  guarda la historia. Si la borras, "desvinculas" el repo.
+- **Commit** — una foto de tus archivos con un mensaje que explica qué
+  cambiaste. Es un punto al que siempre puedes volver.
+- **`origin`** — el nombre corto que le damos a tu repo de GitHub. Es un
+  alias para no escribir la URL entera cada vez.
+- **`main`** — la rama principal, la "versión buena".
+- **push / pull** — push *manda* hacia GitHub, pull *trae* desde GitHub.
+- **upstream** — el vínculo entre tu rama local y la de GitHub. Si no
+  existe, el push normal falla (el script lo crea solo con `-u`).
+
+---
+
+## 🧰 Tu equipo
+
+Si algún día esto se rompe y quieres empezar de cero:
+
+| Herramienta | Estado |
 |---|---|
-| Modifiqué un archivo y no quería | `git restore .` (descarta todo) |
-| Hice un commit con el mensaje mal | `git commit --amend -m "mensaje bueno"` |
-| Commité algo que no debías | `git revert <nº-del-commit>` |
-| Subí algo que no debías | `git revert <nº-del-commit>` y luego `git push` |
-| Lo quiero todo como estaba antes | Ver "Deshacer todo" más abajo |
+| Flutter | ✅ 3.47.5 |
+| Dart | ✅ 3.13.4 |
+| Android Studio | ✅ |
+| Java (Temurin) | ✅ 25 |
+| VS Code | ✅ |
+| Android SDK | ✅ `~/Android/Sdk` |
+| .NET SDK | ✅ |
+| Eclipse | ❌ no instalado |
+| NetBeans | ❌ no instalado |
+| IntelliJ IDEA | ❌ no instalado |
+
+Para instalar los que faltan (en Arch / CachyOS):
+
+```bash
+sudo pacman -S netbeans eclipse
+```
+
+IntelliJ IDEA no está en los repos de pacman: bájalo de
+<https://www.jetbrains.com/idea/download>.
 
 ### Deshacer todo (empezar de cero)
 
@@ -205,18 +369,4 @@ que sepas lo que implica.
 
 ---
 
-## 🧠 Conceptos (para entender qué haces)
-
-- **Repositorio** — la carpeta con una subcarpeta oculta `.git` donde
-  git guarda la historia. Si la borras, "desvincular" el repo.
-- **Commit** — una foto de tus archivos con un mensaje que explica qué
-  cambiaste. Es un punto al que siempre puedes volver.
-- **`origin`** — el nombre corto que le damos a tu repo de GitHub. Es
-  solo un alias para no escribir la URL entera cada vez.
-- **`main`** — la rama principal, la "versión buena" de tus apuntes.
-- **push / pull** — push *manda* hacia GitHub, pull *trae* desde
-  GitHub. Ojo: pull trae, no baja... bueno, los dos es lo mismo.
-
----
-
-*Documento creado en septiembre de 2026.*
+*Documento creado y actualizado en septiembre de 2026.*
