@@ -1,15 +1,284 @@
-# Metadatos de carpetas de KDE (no son contenido tuyo)
+# ============================================================================
+#  .gitignore maestro — repo 2DAM
+#
+#  Cubre: Flutter/Dart · Android · Android Studio · IntelliJ · VS Code
+#          Eclipse · NetBeans · Java · .NET/C# / Avalonia · Node · Python
+#
+#  Incluye los archivos que generan Android Studio, Eclipse y NetBeans con
+#  sus opciones por defecto. Si borras una línea y te acaba saliendo un
+#  archivo de compilación en un commit, vuelve a ponerla.
+# ============================================================================
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  1. SISTEMA OPERATIVO Y ESCRITORIO
+# ─────────────────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Metadatos de carpetas de KDE (Linux)
 .directory
-.Trash-*/
+.Trash-*
 .dirdir
 
-# Sistema operativo
-.DS_Store
-Thumbs.db
-Desktop.ini
-
-# Editores / IDEs
-.idea/
-.vscode/
-*.swp
+# Respaldos de editores
 *~
+*.bak
+*.swp
+*.swo
+*.orig
+.*.kate-swp
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  2. FLUTTER  /  DART
+#     Documentación oficial: https://dart.dev/tools/private-files
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Caché de paquetes — se regenera con `flutter pub get`
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+
+# Plugins — se regeneran automáticamente
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Estado interno del SDK
+.metadata
+
+# Resultado de los tests
+coverage/
+
+# Logs
+*.log
+
+# Credenciales: NUNCA subir
+**/google-services.json
+**/GoogleService-Info.plist
+**/key.properties
+**/keystore.properties
+*.jks
+*.keystore
+
+# pubspec.lock → SÍ se sube en aplicaciones.
+#   En una app conviene fijarlo para que todo el equipo use la misma versión.
+#   Solo se ignoraría en una librería que otras personas consumen.
+#   Si algún día haces una librería, descomenta esto:
+# pubspec.lock
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  3. ANDROID
+#     Documentación: https://developer.android.com/studio/projects/gitignore
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Ruta local al SDK de Android: no es portable, no se sube
+local.properties
+
+# Carpetas de compilación
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Paquetes ya compilados
+*.apk
+*.aab
+*.ap_
+*.aab
+*.dex
+*.d8
+mapping.txt
+output.json
+
+# Clases compiladas de Java
+*.class
+hs_err_pid*
+replay_pid*
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  4. ANDROID STUDIO  /  INTELLIJ IDEA  /  KOTLIN  (JetBrains)
+# ─────────────────────────────────────────────────────────────────────────────
+# Se ignora toda la carpeta .idea: es configuración personal de cada
+# ordenador (rutas, ventanas abiertas, atajos).
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Kotlin 2.0+ genera esta carpeta al compilar
+.kotlin/
+
+# Si algún día quieres compartir el estilo de código con alguien
+# (por ejemplo el profe), descomenta estas dos líneas:
+# .idea/codeStyles/
+# .idea/inspectionProfiles/
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  5. ECLIPSE
+# ─────────────────────────────────────────────────────────────────────────────
+# Caché del workspace: enorme y personal
+.metadata/
+.recommenders/
+
+# Ajustes y datos del proyecto
+.settings/
+.project
+.classpath
+.factorypath
+.loadpath
+
+# Eclipse no compila dentro de bin/ código fuente, solo .class
+# (y *.class ya está ignorado arriba), así que bin/ no hace falta tocarlo.
+
+# Lanzadores generados
+*.*.launch
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  6. NETBEANS
+# ─────────────────────────────────────────────────────────────────────────────
+# Configuración privada de tu máquina
+# (el **/ es imprescindible: sin él solo funcionaría en la raíz del repo)
+**/nbproject/private/
+
+# Carpetas de compilación
+nbbuild/
+nbdist/
+dist/
+
+# Generados automáticamente
+manifest.mf
+nbactions.xml
+*.nbm
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  7. VISUAL STUDIO CODE
+# ─────────────────────────────────────────────────────────────────────────────
+# Se ignora todo menos los ficheros de configuración del proyecto, que sí
+# conviene compartir (dicen qué necesita el proyecto para funcionar).
+**/.vscode/*
+!**/.vscode/extensions.json
+!**/.vscode/settings.json
+!**/.vscode/launch.json
+!**/.vscode/tasks.json
+
+# Caché de extensiones
+.vscode-test/
+.history/
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  8. JAVA / GRADLE / MAVEN  (transversal)
+# ─────────────────────────────────────────────────────────────────────────────
+# Gradle
+.gradle/
+.gradle-cache/
+gradle-app.setting
+.gradletasknamecache
+
+# Maven
+target/
+!**/.mvn/wrapper/maven-wrapper.jar
+
+# ⚠️  NO se ignora *.jar a propósito.
+#     El wrapper de Gradle (gradle/wrapper/gradle-wrapper.jar) hace falta
+#     para compilar sin instalar Gradle, y algunas prácticas de clase usan
+#     librerías .jar que hay que subir. Si te suelto esto te rompería
+#     proyectos enteros.
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  9. .NET  /  C#  /  AVALONIA
+# ─────────────────────────────────────────────────────────────────────────────
+# obj/ no lo usa Dart, se puede ignorar sin riesgo
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+.vs/
+TestResults/
+*.DotSettings.user
+
+# bin/ es ambiguo: en .NET es compilación, pero en Flutter es CÓDIGO FUENTE.
+# Por eso se ignora su contenido pero se dejan pasar los .dart:
+**/bin/*
+!**/bin/*.dart
+
+# Carpetas de publicación
+publish/
+*.publishsettings
+*.pubxml
+*.pubxml.user
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 10. NODE.JS
+# ─────────────────────────────────────────────────────────────────────────────
+node_modules/
+jspm_packages/
+.npm/
+.eslintcache
+*-debug.log
+yarn-error.log
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 11. PYTHON  (por si haces scripts de clase)
+# ─────────────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 12. VARIOS
+# ─────────────────────────────────────────────────────────────────────────────
+# Temporales y logs
+tmp/
+temp/
+*.tmp
+
+# Bases de datos locales de prueba
+*.sqlite
+*.sqlite3
+*.db
+
+# Office: archivos de bloqueo
+~$*
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 13. FINALES DE LÍNEA
+#     Refuerza lo que ya dice .gitattributes. Deja los .bat de Windows
+#     con CRLF (Windows los necesita así) y el resto con LF.
+# ─────────────────────────────────────────────────────────────────────────────
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+*.sh   text eol=lf
