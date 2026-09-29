@@ -1,0 +1,8 @@
+git init
+git add --all
+git commit -m "Mi entrega" 
+git archive --format=zip -o ../u2-a21-ap1-ap2-nom.zip HEAD
+
+ap1 = Apellido 1
+ap2 = Apellido 2
+nom = Nombre
