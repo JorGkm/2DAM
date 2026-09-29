@@ -16,6 +16,20 @@
 *.json  text eol=lf
 *.lock  text eol=lf
 
+# ───────────────────────────────────────────────────────────────────────────
+#  EXCEPCIÓN: ficheros que Windows necesita con CRLF
+#
+#  El intérprete de comandos de Windows (cmd.exe) NO maneja bien LF en
+#  los ficheros .bat: se rompe el "goto" y las etiquetas, y el script se
+#  ejecuta de forma errática o directamente no arranca.
+#
+#  Si tú lees esto y te perguntan por qué aquí hay CRLF siendo todo lo
+#  demás LF: es por los .bat. Nada más.
+# ───────────────────────────────────────────────────────────────────────────
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+
 # Binarios: no tocar nunca
 *.png   binary
 *.jpg   binary

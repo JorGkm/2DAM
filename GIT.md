@@ -18,8 +18,8 @@ con GitHub para poder trabajar desde cualquier equipo.
 
 | Fichero | Para qué sirve |
 |---|---|
-| `subir.sh` | Sube tus cambios a GitHub |
-| `bajar.sh` | Baja los cambios del otro equipo |
+| `subir.sh` / `subir.bat` | Sube tus cambios a GitHub (sh = Linux, bat = Windows) |
+| `bajar.sh` / `bajar.bat` | Baja los cambios del otro equipo |
 | `.gitignore` | Lista lo que **no** se sube (compilados, cachés…) |
 | `.gitattributes` | Normaliza los finales de línea entre Windows y Linux |
 | `GIT.md` | Este manual |
@@ -63,21 +63,21 @@ Te dice cuántos cambios nuevos hay y los aplica.
           │                        │                    │
      haces cambios                │              haces cambios
           │                        │                    │
-     ./subir.sh ─────────────────► │                    │
+     subir.bat ──────────────────► │                    │
           │                        │              ./bajar.sh
           │                        │ ◄──────────────────┘
           │                        │
           │                   ./bajar.sh
           │                        │                    │
-     ./subir.sh ─────────────────► │ ─────────────────► │
+     subir.bat ──────────────────► │ ─────────────────► │
 ```
 
-**Regla de oro:** antes de ponerte a trabajar en un equipo, ejecuta
-`./bajar.sh`. Así evitas conflictos.
+**Regla de oro:** antes de ponerte a trabajar en un equipo, baja los
+cambios. Así evitas conflictos.
 
 ---
 
-## 🖥️ Configurar elSobremesa (Windows) — una sola vez
+## 🖥️ Configurar el Sobremesa (Windows) — una sola vez
 
 ```powershell
 cd Documentos
@@ -90,13 +90,60 @@ Y en Windows **no** hay que hacer `chmod`.
 
 ### Ejecutar los scripts en Windows
 
-Doble clic no funciona (son de Linux). Tienes tres opciones:
+Hay dos juegos de scripts. Los `.bat` son los fáciles: **doble clic y ya**.
+
+#### ⭐ Lo más fácil: `subir.bat` y `bajar.bat`
+
+**Doble clic** y se abre una ventana negra que te hace todo lo necesario.
+No necesitas bash, ni terminals raras, ni tocar nada.
+
+```
+subir.bat     →  te pide el nombre del cambio y sube
+bajar.bat     →  baja los cambios del otro equipo
+```
+
+> La ventana se cierra sola cuando termina. Para que **no** se cierre
+> y puedas leer los mensajes, ábrelos desde CMD o PowerShell:
+> ```cmd
+> cd Documentos\2DAM
+> subir.bat
+> ```
+
+#### Alternativa: los `.sh` con Git Bash
+
+Git for Windows **incluye** bash. Los `.sh` dan colores y mensajes más
+bonitos, pero hay que lanzarlos así:
 
 | Opción | Cómo |
 |---|---|
-| **A. Menú contextual** | Clic derecho en la carpeta → *"Abrir con Git Bash"* |
+| **A. Menú contextual** | Clic derecho en la carpeta → *"Abrir con Git Bash"* → `./subir.sh` |
 | **B. Barra de direcciones** | En el Explorador de archivos, escribe `bash` y dale Enter |
-| **C. Desde CMD o PowerShell** | `bash subir.sh` (la más cómoda) |
+| **C. Desde CMD o PowerShell** | `bash subir.sh` |
+
+> **"No tengo bash"**: sí lo tienes. Busca *"Git Bash"* en el menú Inicio,
+> o está en `C:\Program Files\Git\bin\bash.exe`. Viene con Git, y tú ya
+> tienes Git (has clonado el repo). Si no lo encuentras, usa los `.bat`.
+
+### ⚠️ Por qué los `.bat` no se pueden abrir en Linux
+
+Los ficheros `.bat` y `.cmd` de Windows necesitan saltos de línea **CRLF**
+(o "fin de línea de Windows"). El intérprete de comandos rompe los
+`goto` si están en LF.
+
+Para eso está el `.gitattributes` de este repo, que fuerza:
+
+| Tipo | Final de línea |
+|---|---|
+| `.bat` `.cmd` `.ps1` | **CRLF** (Windows) |
+| `.sh` `.dart` `.md` `.yaml` `.xml` | **LF** (Linux) |
+| `.png` `.zip` `.jar` | binario, no se toca |
+
+Así que los `.bat` en Windows funcionan, y los `.sh` en el portátil
+también. Sin tocar nada a mano.
+
+> **Nunca edites un `.bat` en el Bloc de Notas** y lo guardes: puede
+> meter un carácter invisible al principio del archivo y Windows se
+> quejará. Usa VS Code o Notepad++.
 
 ---
 

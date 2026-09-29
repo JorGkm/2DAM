@@ -275,10 +275,7 @@ temp/
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 13. FINALES DE LÍNEA
-#     Refuerza lo que ya dice .gitattributes. Deja los .bat de Windows
-#     con CRLF (Windows los necesita así) y el resto con LF.
+#     OJO: esto NO hace nada aquí. Los finales de línea se configuran en
+#     .gitattributes, no en .gitignore. Está solo como recordatorio.
+#     La configuración real: .bat/.cmd/.ps1 con CRLF, el resto con LF.
 # ─────────────────────────────────────────────────────────────────────────────
-*.bat  text eol=crlf
-*.cmd  text eol=crlf
-*.ps1  text eol=crlf
-*.sh   text eol=lf
