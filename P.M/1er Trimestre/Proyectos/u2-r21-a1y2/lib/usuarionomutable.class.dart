@@ -1,6 +1,5 @@
-import 'dart:ffi';
 
-class UsuarioInmutable {
+class UsuarioNoMutable {
   final int id;
   final String username;
   final String password;
@@ -11,7 +10,7 @@ class UsuarioInmutable {
   final DateTime? nacimiento;
   //Para que el constructor sea constante, debemos poner todos los atributos como final, serán constantes pero
   //el valor se adjudicará en runtime
-   UsuarioInmutable._(
+  const UsuarioNoMutable._(
     this.id,
     this.username,
     this.password,
@@ -22,10 +21,31 @@ class UsuarioInmutable {
     this.nacimiento
   });
 
+  factory UsuarioNoMutable(
+  int id,
+  String username,
+  String password,
+  String email, {
+  String? nombre = "Desconocido",
+  String? apellidos = "Desconocido",
+  String? nacionalidad = "España",
+  String? nacimientoString,
+}) {
+  return UsuarioNoMutable._(
+    id, username, password, email,
+    nombre: nombre,
+    apellidos: apellidos,
+    nacionalidad: nacionalidad,
+    nacimiento: (nacimientoString != null)
+        ? DateTime.tryParse(nacimientoString)
+        : null,
+  );
+}
+
   //Es una buena práctica tener un metodo como este debido a que se puede "modificar" el objeto inmutable,
   //creas un nuevo objeto con todos los datos del otro en caso de que no tengan datos nuevos pasados por parámetros
   
-  UsuarioInmutable copyWith({
+  UsuarioNoMutable copyWith({
     int? id,
     String? username,
     String? password,
@@ -33,8 +53,9 @@ class UsuarioInmutable {
     String? nombre,
     String? apellidos,
     String? nacionalidad,
+    DateTime? nacimiento
   }){
-    return UsuarioInmutable._(
+    return UsuarioNoMutable._(
       id ?? this.id,
       username ?? this.username,
       password ?? this.password,
@@ -42,10 +63,10 @@ class UsuarioInmutable {
       nombre: nombre ?? this.nombre,
       apellidos: apellidos ?? this.apellidos,
       nacionalidad: nacionalidad ?? this.nacionalidad,
+      nacimiento: nacimiento ?? this.nacimiento
     );
-  }
- UsuarioInmutable 
-  String nombreCompleto() => "$apellidos, $nombre";
+  } 
+   String get nombreCompleto => "$nombre $apellidos";
   @override
   String toString() {
     return """Usuario(
@@ -56,6 +77,7 @@ class UsuarioInmutable {
                 Nombre: $nombre
                 Apellidos: $apellidos
                 Nacionalidad: $nacionalidad
+                Nacimiento: $nacimiento
               )""";
   }
 }
