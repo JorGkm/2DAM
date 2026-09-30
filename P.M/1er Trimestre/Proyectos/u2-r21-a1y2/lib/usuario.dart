@@ -41,7 +41,12 @@ class Usuario {
       nacionalidad: nacionalidad ?? this.nacionalidad,
     );
   }
-  Usuario.anonimo(): id = 0, username = "", password = "", email = "";
+  Usuario.anonimo(): id = 0, username = "", password = "", email = "", creacion = DateTime.now();
+  factory Usuario.fromString(String datos){
+    List<String> datosLista = datos.split(',');
+    int idAUX = int.tryParse(datosLista[0]) ?? 0;
+    return Usuario(idAUX,datosLista[1],datosLista[2],datosLista[3], nombre: datosLista[4],apellidos: datosLista[5],nacionalidad: datosLista[6],nacimientoString: datosLista[7]);
+  } 
   int edad(){
     if(nacimiento != null){
       DateDuration intervalo = AgeCalculator.age(nacimiento!, today: DateTime(2026,9,29)); 

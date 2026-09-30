@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class UsuarioInmutable {
   final int id;
   final String username;
@@ -6,9 +8,10 @@ class UsuarioInmutable {
   final String? nombre;
   final String? apellidos;
   final String? nacionalidad;
+  final DateTime? nacimiento;
   //Para que el constructor sea constante, debemos poner todos los atributos como final, serán constantes pero
   //el valor se adjudicará en runtime
-  const UsuarioInmutable(
+   UsuarioInmutable._(
     this.id,
     this.username,
     this.password,
@@ -16,7 +19,9 @@ class UsuarioInmutable {
     this.nombre = "Desconocido",
     this.apellidos = "Desconocido",
     this.nacionalidad = "España",
+    this.nacimiento
   });
+
   //Es una buena práctica tener un metodo como este debido a que se puede "modificar" el objeto inmutable,
   //creas un nuevo objeto con todos los datos del otro en caso de que no tengan datos nuevos pasados por parámetros
   
@@ -28,8 +33,8 @@ class UsuarioInmutable {
     String? nombre,
     String? apellidos,
     String? nacionalidad,
-  }) {
-    return UsuarioInmutable(
+  }){
+    return UsuarioInmutable._(
       id ?? this.id,
       username ?? this.username,
       password ?? this.password,
@@ -39,7 +44,7 @@ class UsuarioInmutable {
       nacionalidad: nacionalidad ?? this.nacionalidad,
     );
   }
-
+ UsuarioInmutable 
   String nombreCompleto() => "$apellidos, $nombre";
   @override
   String toString() {
