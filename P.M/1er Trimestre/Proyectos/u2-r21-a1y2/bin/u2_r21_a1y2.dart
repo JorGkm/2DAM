@@ -1,7 +1,7 @@
 
 import 'package:u2_r21_a1y2/base.dart';
 import 'package:u2_r21_a1y2/usuario.dart';
-import 'package:u2_r21_a1y2/usuarionoMutable.class.dart';
+import 'package:u2_r21_a1y2/usuarionomutable.class.dart';
 void main(List<String> arguments) {
   //adivinaElNumero(max: 68);
   Usuario user = Usuario(id: 1, username: "JorG",

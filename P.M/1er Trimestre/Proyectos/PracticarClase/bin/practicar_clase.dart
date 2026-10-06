@@ -1,19 +1,13 @@
+import 'package:practicar_clase/practicar_clase.dart';
+import 'package:practicar_clase/usuario.class.dart';
+
+
+
 void main(List<String> arguments) {
-  List<int> numeros = [1, 2, 3, 4, 5];
-  numeros
-    ..add(6)
-    ..addAll([7, 8, 9])
-    ..remove(3);
+  final List<Usuario> usuarios = cargarUsuarios('bin/persona.json');
 
-  final maximo = numeros.fold<int?>(
-    null,
-    (int? valor, int actual) => (valor == null)
-        ? actual
-        : (valor >= actual)
-        ? valor
-        : actual,
-  );
-
-  print(numeros);
-  print(maximo);
+  print("Total de usuarios: ${usuarios.length}\n");
+  for (final Usuario usuario in usuarios) {
+    print(usuario);
+  }
 }
