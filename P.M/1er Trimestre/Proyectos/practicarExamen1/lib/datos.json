@@ -1,0 +1,14 @@
+{
+ "id": 7,
+ "username": "carmen",
+ "email": "carmen@mail.com",
+ "premium": true,
+ "puntos": 120.75,
+ "nacimiento": "1998-06-30",
+ "aficiones": ["cine", "senderismo"],
+ "mascotas": [
+ { "nombre": "Toby", "especie": "perro", "vacunas": ["rabia", "moquillo"] },
+ { "nombre": "Luna", "especie": "gato" }
+ ],
+ "contacto": { "telefono": "600123123", "web": null }
+}
