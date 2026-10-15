@@ -1,0 +1,7 @@
+{
+    "nombreComun": "León",
+    "nombreCientifico": "Panthera leo",
+    "pesoPromedio": 190.0,
+    "enPeligro": true,
+    "dieta": ["Carne", "Antílopes", "Cebras"]
+}

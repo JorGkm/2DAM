@@ -1,0 +1,33 @@
+[
+  {
+    "nombreComun": "León",
+    "nombreCientifico": "Panthera leo",
+    "pesoPromedio": 190.0,
+    "enPeligro": true,
+    "dieta": ["Carne", "Antílopes", "Cebras"]
+  },
+  {
+    "nombreComun": "Panda Gigante",
+    "nombreCientifico": "Ailuropoda melanoleuca",
+    "enPeligro": true,
+    "dieta": ["Bambú", "Frutas"]
+  },
+  {
+    "nombreComun": "Águila Calva",
+    "nombreCientifico": "Haliaeetus leucocephalus",
+    "pesoPromedio": 6.3,
+    "dieta": ["Peces", "Pequeños mamíferos", "Carroña"]
+  },
+  {
+    "nombreComun": "Koala",
+    "nombreCientifico": "Phascolarctos cinereus",
+    "pesoPromedio": 15.0,
+    "dieta": ["Hojas de eucalipto"]
+  },
+  {
+    "nombreComun": "Delfín Común",
+    "pesoPromedio": 150.0,
+    "enPeligro": false,
+    "dieta": ["Peces", "Calamares"]
+  }
+]

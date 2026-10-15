@@ -1,0 +1,69 @@
+========================================================================================================================
+EJERCICIO 2
+========================================================================================================================
+
+------------------------------------------------------------------------------------------------------------------------
+APARTADO A. Construcción de lista de especies a partir de lista de sus datos en JSON
+------------------------------------------------------------------------------------------------------------------------
+[Especie(
+	Nombre Común: León
+	Nombre Científico: Panthera leo
+	Peso Promedio: 190.0 kg
+	En Peligro de Extinción: Sí
+	Dieta: Carne, Antílopes, Cebras
+), Especie(
+	Nombre Común: Panda Gigante
+	Nombre Científico: Ailuropoda melanoleuca
+	En Peligro de Extinción: Sí
+	Dieta: Bambú, Frutas
+), Especie(
+	Nombre Común: Águila Calva
+	Nombre Científico: Haliaeetus leucocephalus
+	Peso Promedio: 6.3 kg
+	Dieta: Peces, Pequeños mamíferos, Carne
+), Especie(
+	Nombre Común: Koala
+	Nombre Científico: Phascolarctos cinereus
+	Peso Promedio: 15.0 kg
+	Dieta: Hojas de eucalipto
+), Especie(
+	Nombre Común: Delfín Común
+	Peso Promedio: 150.0 kg
+	En Peligro de Extinción: No
+	Dieta: Peces, Calamares
+)]
+
+------------------------------------------------------------------------------------------------------------------------
+APARTADO B. Obtener el listado de especies cuyo peso promedio es inferior a 100Kg. Las especies de las que no se conoce el peso también deben aparecer en el resultado.
+------------------------------------------------------------------------------------------------------------------------
+[Especie(
+	Nombre Común: Panda Gigante
+	Nombre Científico: Ailuropoda melanoleuca
+	En Peligro de Extinción: Sí
+	Dieta: Bambú, Frutas
+), Especie(
+	Nombre Común: Águila Calva
+	Nombre Científico: Haliaeetus leucocephalus
+	Peso Promedio: 6.3 kg
+	Dieta: Peces, Pequeños mamíferos, Carne
+), Especie(
+	Nombre Común: Koala
+	Nombre Científico: Phascolarctos cinereus
+	Peso Promedio: 15.0 kg
+	Dieta: Hojas de eucalipto
+)]
+
+------------------------------------------------------------------------------------------------------------------------
+APARTADO C. Obtener en un valor booleano si hay alguna especie en peligro que se alimenta de carne.
+------------------------------------------------------------------------------------------------------------------------
+¿Hay especie en peligro que se alimenta de carne? true
+
+------------------------------------------------------------------------------------------------------------------------
+APARTADO D. Obtener una lista donde aparezcan todos los alimentos consumidos por todas las especies.
+------------------------------------------------------------------------------------------------------------------------
+[Carne, Antílopes, Cebras, Bambú, Frutas, Peces, Pequeños mamíferos, Carne, Hojas de eucalipto, Peces, Calamares]
+
+------------------------------------------------------------------------------------------------------------------------
+APARTADO E. Obtén, a partir de la lista anterior, una cadena de texto donde aparezcan todos los alimentos que consumen todas las especies separados por comas (con espacio en blanco tras la coma), pero sin repetidos.
+------------------------------------------------------------------------------------------------------------------------
+Carne, Antílopes, Cebras, Bambú, Frutas, Peces, Pequeños mamíferos, Hojas de eucalipto, Calamares
